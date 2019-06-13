@@ -1,0 +1,3 @@
+# Webpack Template
+
+webpack のテンプレート
