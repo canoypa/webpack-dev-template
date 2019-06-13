@@ -1,0 +1,3 @@
+interface HELLO {
+  moji: string;
+}
