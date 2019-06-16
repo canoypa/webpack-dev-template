@@ -127,6 +127,14 @@ const common = {
     ]
   },
 
+  resolve: {
+    extensions: ['.ts'],
+    alias: {
+      root: path.resolve(__dirname, 'src'),
+      assets: path.resolve(__dirname, 'src/assets')
+    }
+  },
+
   devServer: {
     port: 80,
     contentBase: path.join(__dirname, 'debug')
