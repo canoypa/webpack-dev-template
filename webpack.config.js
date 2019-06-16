@@ -19,29 +19,30 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); /
 const TerserPlugin = require('terser-webpack-plugin'); // js圧縮用
 
 let entrys = {};
-let ejs_entries = [];
+let pug_entries = [];
 
 glob.sync('**/index.ts', { cwd: 'src' }).map(key => (entrys[key.replace(/ts$/, 'js')] = `./src/${key}`));
-glob.sync('**/index.ejs', { cwd: 'src' }).map(key => {
-  const p = new HtmlWebpackPlugin({
-    inject: false,
-    filename: `${key.replace(/\.ejs$/, '.html')}`,
-    template: `./src/${key}`,
-    minify: {
-      collapseWhitespace: true,
-      removeComments: true,
-      removeRedundantAttributes: true,
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      useShortDoctype: true
-    }
-  });
-  ejs_entries.push(p);
+glob.sync('**/index.pug', { cwd: 'src' }).map(key => {
+  ejs_entries.push(
+    new HtmlWebpackPlugin({
+      inject: false,
+      filename: key.replace(/\.pug$/, '.html'),
+      template: `./src/${key}`,
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true
+      }
+    })
+  );
 });
 
 const fileName = (name, path, space) =>
   `${path
-    .replace(`${space}\\src\\`, '')
+    .replace(`${space}\\src`, '')
     .replace(/([^\\])*$/, '')
     .replace(/\\/g, '/')}${name}`;
 
@@ -86,25 +87,27 @@ const common = {
           'sass-loader' // sassをcssに変換
         ]
       },
-      // ejs
+      // pug
       {
-        test: /\.ejs$/,
+        test: /\.pug$/,
         use: [
           {
             loader: 'html-loader', // html読むよ
             options: {
-              minimize: true,
-              collapseBooleanAttributes: true,
-              removeRedundantAttributes: true,
-              attrs: ['img:src', 'link:href' /*'script:src' entryを空にできないのでダメ*/]
+              attrs: ['img:src', 'link:href']
             }
           },
-          'ejs-html-loader' // ejs読むよ
+          {
+            loader: 'pug-html-loader', // pug読むよ
+            options: {
+              basedir: path.resolve(__dirname, 'src')
+            }
+          }
         ]
       },
       // assets
       {
-        test: /\.(png|webp|mp4)$/,
+        test: /\.(png|ico|webp|mp4)$/,
         use: {
           loader: 'file-loader',
           options: {
@@ -115,7 +118,7 @@ const common = {
     ]
   },
 
-  plugins: [...ejs_entries], // ejs
+  plugins: [...pug_entries], // pug
 
   optimization: {
     minimizer: [
@@ -141,8 +144,7 @@ const dev = {
 const prod = {
   mode: 'production',
   output: {
-    path: path.join(__dirname, 'build'),
-    publicPath: 'http://localhost/' // urlにドメインを追加
+    path: path.join(__dirname, 'build')
   }
 };
 
