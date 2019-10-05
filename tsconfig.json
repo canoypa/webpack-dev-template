@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "es2015",
-    "sourceMap": true,
+    "target": "es5",
 
     "strict": true,
-    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
 
-    "typeRoots": [".types"],
-
-    "lib": ["dom", "es6"]
+    "moduleResolution": "node",
+    "esModuleInterop": true
   }
 }
