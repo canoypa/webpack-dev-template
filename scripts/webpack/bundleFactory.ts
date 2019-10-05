@@ -1,4 +1,5 @@
 import * as webpack from 'webpack';
+import { WebpackChunks, WebpackRules } from './type';
 
 abstract class BundleFactory {
   createConfig(): webpack.Configuration {}
