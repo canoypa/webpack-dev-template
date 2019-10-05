@@ -11,6 +11,7 @@ abstract class BundleFactory {
   }
 
   abstract getChunks(): WebpackChunks;
+
   abstract getRules(): WebpackRules;
 }
 
