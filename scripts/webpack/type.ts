@@ -4,4 +4,6 @@ type WebpackChunks = string | string[] | webpack.Entry | webpack.EntryFunc;
 
 type WebpackRules = webpack.RuleSetRule[];
 
-export { WebpackChunks, WebpackRules };
+type ConfigOpt = { output: string; chunks: WebpackChunks };
+
+export { WebpackChunks, WebpackRules, ConfigOpt };
