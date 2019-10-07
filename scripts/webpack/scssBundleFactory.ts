@@ -7,7 +7,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { ConfigOpt } from './type';
 
 class ScssBundleFactory implements BundleFactory {
-  createConfig(opt: ConfigOpt): webpack.Configuration {
+  static createConfig(opt: ConfigOpt): webpack.Configuration {
     return {
       mode: 'production',
 
@@ -33,14 +33,14 @@ class ScssBundleFactory implements BundleFactory {
     };
   }
 
-  createCombined(): webpack.Configuration {
+  static createCombined(): webpack.Configuration {
     const output = pathResolver.get('./build/Combined');
     const chunks = pathResolver.getFromSrc('./index.scss');
 
     return this.createConfig({ output, chunks });
   }
 
-  createALaCarte(): webpack.Configuration {
+  static createALaCarte(): webpack.Configuration {
     const output = pathResolver.get('./build/Combined');
     const chunks = {
       chunk: pathResolver.getFromSrc('./chunk/index.scss')
