@@ -1,19 +1,11 @@
 import * as webpack from 'webpack';
-import { WebpackChunks, WebpackRules } from './type';
+import { ConfigOpt } from './type';
 
-abstract class BundleFactory {
-  createConfig(): webpack.Configuration {}
+interface BundleFactory {
+  createConfig(opt: ConfigOpt): webpack.Configuration;
 
-  createCombined(): webpack.Configuration {
-    return this.createConfig();
-  }
-  createALaCarte(): webpack.Configuration {
-    return this.createConfig();
-  }
-
-  abstract getChunks(): WebpackChunks;
-
-  abstract getRules(): WebpackRules;
+  createCombined(): webpack.Configuration;
+  createALaCarte(): webpack.Configuration;
 }
 
 export default BundleFactory;
